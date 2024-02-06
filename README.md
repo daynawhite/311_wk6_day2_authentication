@@ -1,4 +1,4 @@
-# Express Authentication
+<!-- # Express Authentication
 
 PLEASE NOTE THAT PRIOR TO THIS ASSIGNMENT, YOU NEED TO HAVE FINISHED THE SECTION TITLED "Authentication with Auth0" IN THE PRE-HOMEWORK
 
@@ -56,46 +56,46 @@ If you get errors after adding your database credentials to the `.env` file in t
   - Modify all places in the app that require `mysql`: 
     - Change `const mysql = require('mysql')` to `const mysql = require('mysql2')`
 
-Finally, in MySQL Workbench, run the `initialize.sql` script that is included in this project. You will run this on the "admin" database. You can simply copy the sql from the file into your MySQL Workbench console. Follow the steps under the `imgs` folder if you are having trouble with this.
+Finally, in MySQL Workbench, run the `initialize.sql` script that is included in this project. You will run this on the "admin" database. You can simply copy the sql from the file into your MySQL Workbench console. Follow the steps under the `imgs` folder if you are having trouble with this. -->
 
-## Overview
+<!-- ## Overview
 
 Note: This is a tough project, but hang in there and try to understand as much as possible. Auth0 is a popular framework for authentication. A lot of the setup is done for us.
 
-The `routes/controllers`, SQL statements and basic setup has been done for us. Our job is now to complete the functions in the middleware folder and then use them in our routes.
-
+The `routes/controllers`, SQL statements and basic setup has been done for us. Our job is now to complete the functions in the middleware folder and then use them in our routes. -->
+<!-- 
 ## GET users
 
-In Postman or a web browser, navigate to `http://localhost:4001/users/` (a GET request) and you should be able to see a list of all the users in your database. This is information that we will leave public.
+In Postman or a web browser, navigate to `http://localhost:4001/users/` (a GET request) and you should be able to see a list of all the users in your database. This is information that we will leave public. -->
 
-## POST / PUT / DELETE
+<!-- ## POST / PUT / DELETE
 
-These routes are for manipulating the data and these are things that we ideally want someone to be logged in for before they are able to work with the data. To start, we will create a middleware function (that Auth0 provides us).
+These routes are for manipulating the data and these are things that we ideally want someone to be logged in for before they are able to work with the data. To start, we will create a middleware function (that Auth0 provides us). -->
 
 ### Middleware
-
+<!-- 
 In the `middleware/index.js` file, locate the function called `checkJwt`. We need to apply this middleware to the routes you want to protect. Before you do that though... go to Postman and send a POST request to `http://localhost:4001/users/` with no body. This should add a pre-selected user to your DB. You should have gotten a response that looks like this:
 
 ```json
 {
     "newId": 501
 }
-```
+``` -->
 
-In order to prevent this, we need to go to that route, the third one down in the `routers/users.js` file, and add `checkJwt` in between the path and the request/response function. The final result should look like this:
+<!-- In order to prevent this, we need to go to that route, the third one down in the `routers/users.js` file, and add `checkJwt` in between the path and the request/response function. The final result should look like this:
 
 ```js
 // routes/users line 10
 router.post('/', checkJwt, usersController.createUser)
-```
+``` -->
 
-Now go ahead and attempt to make that POST request again in Postman. The one to `http://localhost:4001/users/`. Try it a couple of times. You should now get a response with a 401 status code and a body that has `UnauthorizedError: No authorization token was found` in it. That's good news, we are now blocking requests to this endpoint until people are authenticated. Add that same middleware to the rest of the routes (that are not GET requests) in the `routers/users.js` file.
+<!-- Now go ahead and attempt to make that POST request again in Postman. The one to `http://localhost:4001/users/`. Try it a couple of times. You should now get a response with a 401 status code and a body that has `UnauthorizedError: No authorization token was found` in it. That's good news, we are now blocking requests to this endpoint until people are authenticated. Add that same middleware to the rest of the routes (that are not GET requests) in the `routers/users.js` file. -->
 
-## Authenticating
+<!-- ## Authenticating
 
-So how do users authenticate? We've seen how we can block them but now we actually need certain users to have access. So we need to send the bearer token (jwt). First we'll do a test run.
+So how do users authenticate? We've seen how we can block them but now we actually need certain users to have access. So we need to send the bearer token (jwt). First we'll do a test run. -->
 
-### Testing the JWT
+<!-- ### Testing the JWT
 
 From the Auth0 dashboard in your browser, navigate to APIs (on the left side) -> My Express App (the API you created in pre-homework) -> Test. Midway down the page in the code block labeled "Response", copy the "access token" to your clipboard. It should start with `eyJ0eXAiOiJKV1QiLCJh...` or some close combination of characters.
 
@@ -109,9 +109,9 @@ Execute the request and notice that you are allowed to add users again and see a
 {
     "newId": 502
 }
-```
+``` -->
 
-### Obtaining the JWT
+<!-- ### Obtaining the JWT
 
 Ok so we now have protected routes and some users can access them if they have the appropriate token but where do they get that token from? We need to create a workflow that sends back a token when a user logs in. We need to do that by calling an Auth0 endpoint during the login endpoint.
 
@@ -123,10 +123,10 @@ Find the "login" function in [controllers/auth.js](./controllers/auth.js). You'l
 
 Next, go to `Applications` --> [click the project you just created] --> Scroll all the way down to "Advanced Settings." Make sure that the option "Password" is checked: 
 
-<img width="1282" alt="Screen Shot 2023-02-10 at 3 16 44 PM" src="https://user-images.githubusercontent.com/20386502/218220646-04457bf5-438f-4eb0-8550-b05b52498cf4.png">
+<img width="1282" alt="Screen Shot 2023-02-10 at 3 16 44 PM" src="https://user-images.githubusercontent.com/20386502/218220646-04457bf5-438f-4eb0-8550-b05b52498cf4.png"> -->
 
 
-2. Now we need to create a couple of users for our application to use. We will do this manually for now. Go to the main page of your Auth0 dashboard in your browser, select "Users & Roles" -> "User", then click "Create User". Leave the default connection type and enter an email and password for your user. For example:
+<!-- 2. Now we need to create a couple of users for our application to use. We will do this manually for now. Go to the main page of your Auth0 dashboard in your browser, select "Users & Roles" -> "User", then click "Create User". Leave the default connection type and enter an email and password for your user. For example:
 
 ```yaml
 email: test@example.com
@@ -144,8 +144,8 @@ Remember this information because we are about to use it again. This time go to 
 
 If everything worked correctly you should have received an "access_token" in return. That's the token that we can use to send to your endpoints after a user logs in. Keep in mind that the "users" are now stored in Auth0 and are different from the users we have in our database. Those database users are just dummy data at this point. We won't need to actually store information about our users because Auth0 will do it for us.
 
-If you are having issues you may refer to the last screenshot above and make sure that you have `Username-Password-Authentication` in the "Default Directory" input.
-
+If you are having issues you may refer to the last screenshot above and make sure that you have `Username-Password-Authentication` in the "Default Directory" input. -->
+<!-- 
 ## BONUS - logger
 
 Create a function called `logger` in the `middleware/index.js` file. Its purpose will be to log the route and date/time that each request happened. The outline of the function will look like this:
@@ -168,9 +168,10 @@ Import this logger function into the main `index.js` file: `const { logger } = r
 
 Between the `bodyParser` and the users router add the following: `app.use(logger)`
 
-This is an example of application specific middleware. Every route will now pass through our logger function and log the path and the date/time that the request was made. This would be useful for determining our most popular routes.
+This is an example of application specific middleware. Every route will now pass through our logger function and log the path and the date/time that the request was made. This would be useful for determining our most popular routes. -->
 
 ## Summary
 
 If all went according to plan we now have an API that is locked down with authentication and we have also added middleware on all of our routes that logs the current request and the associated date/time.
 
+KACHOW!
